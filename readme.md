@@ -62,7 +62,7 @@ The server will run on `http://localhost:5000`
 #### 1️⃣ **User Signup**
 
 ```http
-POST /signup
+POST /signup - https://trainbooking-fg34.onrender.com/api/auth/signup
 ```
 
 **Body (JSON):**
@@ -78,7 +78,8 @@ POST /signup
 #### 2️⃣ **User Login**
 
 ```http
-POST /login
+POST /login - https://trainbooking-fg34.onrender.com/api/auth/login
+
 ```
 
 **Body (JSON):**
@@ -105,7 +106,7 @@ POST /login
 #### 3️⃣ **Get All Seats & Availability**
 
 ```http
-GET /seats
+GET /seats - https://trainbooking-fg34.onrender.com/api/seats
 ```
 
 **Response:**
@@ -123,7 +124,7 @@ GET /seats
 #### 4️⃣ **Book Seats (Requires Auth)**
 
 ```http
-PATCH /seats/book
+PATCH /seats/book - https://trainbooking-fg34.onrender.com/api/seats/book
 ```
 
 **Headers:**
@@ -149,7 +150,7 @@ Authorization: Bearer <your-jwt-token>
 #### 5️⃣ **Reset All Seats (Requires Auth)**
 
 ```http
-PATCH /seats/reset
+PATCH /seats/reset - https://trainbooking-fg34.onrender.com/api/seats/reset
 ```
 
 **Headers:**
