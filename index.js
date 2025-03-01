@@ -46,7 +46,7 @@ const { seatModel } = require('./models/trainSeatModel');
 
 const app = express();
 
-// Use cors to allow cross-origin requests from any origin
+// Used cors to allow cross-origin requests from any origin
 app.use(cors());
 
 // Use express.json() to parse JSON bodies
@@ -72,7 +72,6 @@ connectToDatabase().then(async () => {
     }
 });
 
-// Define routes
 app.use('/api/auth', router);       // Signup & Login routes
 app.use('/api/seats', seatRouter);    // Seat booking routes
 

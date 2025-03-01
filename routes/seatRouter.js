@@ -16,7 +16,7 @@ seatRouter.get('/', async (req, res) => {
     }
 });
 
-// PATCH route: Book seats (requires authentication)
+// PATCH route: Book seats
 seatRouter.patch('/book', protect, checkCount, async (req, res) => {
     const requiredSeats = req.body.seats;
     console.log({ requiredSeats });
@@ -32,20 +32,17 @@ seatRouter.patch('/book', protect, checkCount, async (req, res) => {
         });
 
         let reserved = [];
-        // Try to find a contiguous block in any row
         for (const row in rows) {
             const rowSeats = rows[row];
             let block = [];
             for (let i = 0; i < rowSeats.length; i++) {
                 if (!rowSeats[i].isBooked) {
-                    // Start or continue a contiguous block
                     if (block.length === 0 || rowSeats[i].seatNo === block[block.length - 1].seatNo + 1) {
                         block.push(rowSeats[i]);
                     } else {
                         block = [rowSeats[i]];
                     }
                     if (block.length === requiredSeats) {
-                        // Found contiguous seats; update them
                         for (let seat of block) {
                             reserved.push(`Row ${seat.rowNumber} Seat ${seat.seatNo}`);
                             await seatModel.findByIdAndUpdate(seat._id, { isBooked: true, bookedBy: req.user.id });
@@ -59,7 +56,6 @@ seatRouter.patch('/book', protect, checkCount, async (req, res) => {
             if (reserved.length === requiredSeats) break;
         }
 
-        // If contiguous block wasn't found, try a fallback strategy:
         if (reserved.length !== requiredSeats) {
             const isEmpty = await seatModel.find({ isBooked: false }).sort({ rowNumber: 1, seatNo: 1 });
             if (isEmpty.length < requiredSeats) {
@@ -79,7 +75,7 @@ seatRouter.patch('/book', protect, checkCount, async (req, res) => {
     }
 });
 
-// PATCH route: Reset all seats to available (requires authentication)
+// PATCH route: Reset all seats to available
 seatRouter.patch('/reset', protect, async (req, res) => {
     try {
         await seatModel.updateMany({ isBooked: true }, { isBooked: false, bookedBy: null });
